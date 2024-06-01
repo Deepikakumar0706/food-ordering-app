@@ -1,8 +1,15 @@
 import BaseUrls from "./baseUrls";
 
 export const RestaurantComponent = (props) => {
-  const { name, sla, cuisines, locality, areaName, cloudinaryImageId } =
-    props.restData.info;
+  const {
+    name,
+    sla,
+    avgRating,
+    cuisines,
+    locality,
+    areaName,
+    cloudinaryImageId,
+  } = props.restData.info;
   return (
     <div className="rest-container">
       <div className="image-cont">
@@ -15,6 +22,7 @@ export const RestaurantComponent = (props) => {
         />
       </div>
       <h3>{name}</h3>
+      <p>{avgRating}</p>
       <p>{sla.slaString}</p>
       <p>{cuisines.join(",")}</p>
       <p>{`${locality}, ${areaName}`}</p>
