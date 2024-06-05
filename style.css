@@ -1,7 +1,4 @@
-body{
-    margin: 0;
-    padding: 0;
-}
+
 
 .header{
 background-color: antiquewhite;
@@ -9,13 +6,15 @@ background-color: antiquewhite;
 
 .test{
     display: flex;
+    align-items: center;
     justify-content: space-between;
     margin: 0px 50px;
 }
 
 .test1{
     display: grid;
-    grid-template-columns: 200px 200px 200px 100px;
+    grid-template-columns: 100px 100px 150px 100px 50px ;
+    
 }
 
 .main{
@@ -66,6 +65,11 @@ background-color: antiquewhite;
     
     
 }
+
+.loader-cont{
+    text-align: center;
+}
+
 
 
 

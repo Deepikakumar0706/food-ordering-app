@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 const HeaderComponent = () => {
+  const [loginName, setLoginName] = useState("Login");
   return (
     <div className="header">
       <div className="test">
@@ -9,10 +12,17 @@ const HeaderComponent = () => {
           height="50"
         />
         <div className="test1">
-          <p>Search</p>
-          <p>Offers</p>
-          <p>Online Services</p>
-          <p>Sign In</p>
+          <div>Search</div>
+          <div>Offers</div>
+          <div>Online Services</div>
+          <div>Sign In</div>
+          <button
+            onClick={() => {
+              setLoginName(loginName === "Login" ? "Logout" : "Login");
+            }}
+          >
+            {loginName}
+          </button>
         </div>
       </div>
     </div>

@@ -1,17 +1,29 @@
 import { RestaurantComponent } from "./restrauntcomponents";
-import restaurantData from "../../assets/data/restaruant.json";
-import { useState } from "react";
+// import restaurantData from "../../assets/data/restaruant.json";
+import { useEffect, useState } from "react";
 
-const restaurantListData =
-  restaurantData.data.cards[0].card.card.gridElements.infoWithStyle.restaurants;
+const RestaurantListDataUrl =
+  "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.89960&lng=80.22090&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING";
 
 const RestaurantListComponent = () => {
-  const [restaurantDetails, setRestaurantDetails] =
-    useState(restaurantListData);
-  const [filteredRestaurantList, setFilteredRestaurantList] =
-    useState(restaurantListData);
+  const [restaurantDetails, setRestaurantDetails] = useState([]);
+  const [filteredRestaurantList, setFilteredRestaurantList] = useState([]);
   const [searchText, setSearchText] = useState("");
-  return (
+  useEffect(() => {
+    console.log("called");
+    fetchComponents();
+  }, []);
+  const fetchComponents = async () => {
+    const data1 = await fetch(RestaurantListDataUrl);
+    const restaruantJSON = await data1.json();
+    const restaurantListData =
+      restaruantJSON.data.cards[4].card.card.gridElements.infoWithStyle
+        .restaurants;
+    setRestaurantDetails(restaurantListData);
+    setFilteredRestaurantList(restaurantListData);
+  };
+
+  return filteredRestaurantList.length ? (
     <div className="main-cont">
       <div className="filter-cont">
         <button
@@ -49,7 +61,7 @@ const RestaurantListComponent = () => {
         <div>
           <button
             onClick={() => {
-              setFilteredRestaurantList(restaurantListData);
+              setFilteredRestaurantList(restaurantDetails);
               setSearchText("");
             }}
           >
@@ -63,6 +75,10 @@ const RestaurantListComponent = () => {
           return <RestaurantComponent key={rest?.info?.id} restData={rest} />;
         })}
       </div>
+    </div>
+  ) : (
+    <div className="loader-cont">
+      <h1>Loading...</h1>
     </div>
   );
 };
