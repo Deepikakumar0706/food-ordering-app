@@ -1,5 +1,5 @@
 import { RestaurantComponent } from "./restrauntcomponents";
-// import restaurantData from "../../assets/data/restaruant.json";
+import ShimmerPage from "./ShimmerPage";
 import { useEffect, useState } from "react";
 
 const RestaurantListDataUrl =
@@ -77,9 +77,7 @@ const RestaurantListComponent = () => {
       </div>
     </div>
   ) : (
-    <div className="loader-cont">
-      <h1>Loading...</h1>
-    </div>
+    <ShimmerPage />
   );
 };
 export default RestaurantListComponent;
