@@ -10,6 +10,7 @@ import Help from "./components/Help";
 import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import ErrorPage from "./components/ErrorPage";
+import RestaurantOverview from "./components/RestaurantOverview";
 const Application = () => {
   return (
     <div>
@@ -44,6 +45,10 @@ const appRoute = createBrowserRouter([
       {
         path: "/contactUs",
         element: <ContactUs />,
+      },
+      {
+        path: "/details/:id",
+        element: <RestaurantOverview />,
       },
     ],
   },

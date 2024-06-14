@@ -1,7 +1,9 @@
 import BaseUrls from "./baseUrls";
+import { Link } from "react-router-dom";
 
 export const RestaurantComponent = (props) => {
   const {
+    id,
     name,
     sla,
     avgRating,
@@ -21,7 +23,10 @@ export const RestaurantComponent = (props) => {
           alt="image1"
         />
       </div>
-      <h3>{name}</h3>
+      <Link to={`/details/${id}`}>
+        <h3>{name}</h3>
+      </Link>
+
       <p>{avgRating}</p>
       <p>{sla.slaString}</p>
       <p>{cuisines.join(",")}</p>

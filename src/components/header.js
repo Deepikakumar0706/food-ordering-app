@@ -25,6 +25,7 @@ const HeaderComponent = () => {
           <Link to="/contactUs">
             <div>ContactUs</div>
           </Link>
+
           <button
             onClick={() => {
               setLoginName(loginName === "Login" ? "Logout" : "Login");
