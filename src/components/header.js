@@ -9,8 +9,8 @@ const HeaderComponent = () => {
         <img
           src={require("../../assets/images/swiggy.png")}
           alt="swiggy"
-          width="60"
-          height="50"
+          width="80"
+          height="80"
         />
         <div className="test1">
           <Link to="/home">
