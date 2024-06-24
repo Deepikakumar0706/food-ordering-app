@@ -1,34 +1,29 @@
-import { RestaurantComponent } from "./restrauntcomponents";
-import ShimmerPage from "./ShimmerPage";
+import RestaurantComponent, {
+  RecommendedRestaurantDetails,
+} from "./restrauntcomponents";
 import { useEffect, useState } from "react";
 
-const RestaurantListDataUrl =
-  "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.89960&lng=80.22090&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING";
+import ShimmerPage from "./ShimmerPage";
+import useRestaurantList from "../Custom-Hooks/UseRestaurant";
 
-const RestaurantListComponent = () => {
-  const [restaurantDetails, setRestaurantDetails] = useState([]);
+const RestaurantList = () => {
   const [filteredRestaurantList, setFilteredRestaurantList] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const restaurantList = useRestaurantList();
+
+  const RecommendedCardDetails =
+    RecommendedRestaurantDetails(RestaurantComponent);
   useEffect(() => {
-    console.log("called");
-    fetchComponents();
-  }, []);
-  const fetchComponents = async () => {
-    const data1 = await fetch(RestaurantListDataUrl);
-    const restaruantJSON = await data1.json();
-    const restaurantListData =
-      restaruantJSON.data.cards[4].card.card.gridElements.infoWithStyle
-        .restaurants;
-    setRestaurantDetails(restaurantListData);
-    setFilteredRestaurantList(restaurantListData);
-  };
+    setFilteredRestaurantList(restaurantList);
+  }, [restaurantList]);
 
   return filteredRestaurantList.length ? (
     <div className="main-cont">
-      <div className="filter-cont">
+      <div className="filter-cont  flex my-3 justify-between">
         <button
+          className="bg-indigo-900 text-white px-2 py-2 font-normal rounded-md"
           onClick={() => {
-            const filterOutput = restaurantDetails.filter((rest) => {
+            const filterOutput = restaurantList.filter((rest) => {
               return rest.info.avgRating > 4.5;
             });
             setFilteredRestaurantList(filterOutput);
@@ -38,6 +33,7 @@ const RestaurantListComponent = () => {
         </button>
         <div className="search-cont">
           <input
+            className="border border-gray-500 rounded w-4/6 mx-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             type="text"
             id="rest1"
             value={searchText}
@@ -46,8 +42,9 @@ const RestaurantListComponent = () => {
             }}
           />
           <button
+            className="bg-indigo-900 text-white px-2 py-2 font-normal rounded-md"
             onClick={() => {
-              const searchTextOutput = restaurantDetails.filter((rest) => {
+              const searchTextOutput = restaurantList.filter((rest) => {
                 return rest.info.name
                   .toLowerCase()
                   .includes(searchText.toLowerCase());
@@ -60,8 +57,9 @@ const RestaurantListComponent = () => {
         </div>
         <div>
           <button
+            className="bg-indigo-900 text-white px-2 py-2 font-normal rounded-md"
             onClick={() => {
-              setFilteredRestaurantList(restaurantDetails);
+              setFilteredRestaurantList(restaurantList);
               setSearchText("");
             }}
           >
@@ -70,9 +68,13 @@ const RestaurantListComponent = () => {
         </div>
       </div>
 
-      <div className="rest-link-content">
+      <div className="flex flex-wrap mt-6">
         {filteredRestaurantList.map((rest) => {
-          return <RestaurantComponent key={rest?.info?.id} restData={rest} />;
+          return rest?.info?.avgRating >= 4 ? (
+            <RecommendedCardDetails key={rest?.info?.id} restData={rest} />
+          ) : (
+            <RestaurantComponent key={rest?.info?.id} restData={rest} />
+          );
         })}
       </div>
     </div>
@@ -80,4 +82,4 @@ const RestaurantListComponent = () => {
     <ShimmerPage />
   );
 };
-export default RestaurantListComponent;
+export default RestaurantList;

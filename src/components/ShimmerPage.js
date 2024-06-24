@@ -4,9 +4,9 @@ const ShimmerPage = () => {
     <div>
       <div className="main">
         <div className="rest-link-content">
-          {emptyDetails.map(() => {
+          {emptyDetails.map((value) => {
             return (
-              <div className="rest-container">
+              <div key={value} className="rest-container">
                 <div className="image-cont">
                   <div className="img bg-grey"></div>
                 </div>

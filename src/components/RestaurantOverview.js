@@ -1,59 +1,32 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import BaseUrls from "./baseUrls";
+// import BaseUrls from "./baseUrls";
+import UseRestaurantMenuList from "../Custom-Hooks/UseRestaurantMenuList";
 
-const RestaurantOverview_url =
-  "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.89960&lng=80.22090&catalog_qa=undefined&submitAction=ENTER&restaurantId=";
+import Restaurantcategory from "./Restaurantcategory";
 
 const RestaurantOverview = () => {
   let { id } = useParams();
+  const menuDetails = UseRestaurantMenuList(id);
 
-  const [restaurantMenuList, setRestaurantMenuList] = useState([]);
-  const [restaurantName, setRestaurantName] = useState("Name");
+  const restaurantName = menuDetails.restaurantName;
+  const cardDetails = menuDetails.cardDetails;
 
-  useEffect(() => {
-    fetchRestaurantMenuList(id);
-  }, []);
-  const fetchRestaurantMenuList = async (id) => {
-    const data = await fetch(`${RestaurantOverview_url}${id}`);
-    const restaurantMenuJSON = await data.json();
-    console.log(restaurantMenuJSON);
-
-    const restaurantMenuData =
-      restaurantMenuJSON.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards[2]
-        .card.card.itemCards;
-    setRestaurantMenuList(restaurantMenuData);
-    setRestaurantName(restaurantMenuJSON.data.cards[0].card.card.text);
-  };
-  return restaurantMenuList.length ? (
-    <div className="main">
-      <h1>{restaurantName}</h1>
-      {restaurantMenuList.map((restMenu) => {
-        return restMenu.card.info.imageId ? (
-          <div key={restMenu.card.info.id} className="rest-menu-list-cont">
-            <div>
-              <h3>{restMenu.card.info.name}</h3>
-
-              <div>{`$ ${restMenu.card.info.price / 100}`}</div>
-
-              <div>{`${restMenu.card.info.ratings.aggregatedRating.rating} (${restMenu.card.info.ratings.aggregatedRating.ratingCountV2})`}</div>
-              <p>{restMenu.card.info.description}</p>
-            </div>
-            <img
-              className="img list-overview"
-              src={`${BaseUrls.RESTAURANT_LIST_IMAGE_URL}${restMenu.card.info.imageId}`}
-              width="150"
-              height="150"
-              alt="restaurantimg1"
-            />
-          </div>
-        ) : (
-          <img
-            className="img list-overview"
-            src="Image Unavailable "
-            width="150"
-            height="150"
-            alt="Image Available"
+  const categories = cardDetails.filter((category) => {
+    return (
+      category.card.card["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory" ||
+      category.card.card["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.NestedItemCategory"
+    );
+  });
+  return cardDetails.length ? (
+    <div className="w-10/12 m-auto">
+      <h1 className="font-extrabold text-2xl my-5">{restaurantName}</h1>
+      {categories.map((category) => {
+        return (
+          <Restaurantcategory
+            key={category.card.card.title}
+            category={category}
           />
         );
       })}
