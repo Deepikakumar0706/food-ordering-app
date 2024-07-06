@@ -1,15 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import UseOnlineStatus from "../Custom-Hooks/UseOnlineStatus";
+import UserContext from "../../utils/UserContext";
 
 const HeaderComponent = () => {
   const [loginName, setLoginName] = useState("Login");
   const [cartButtonName, setCartButtonName] = useState(["Add to cart"]);
+
+  const userDetails = useContext(UserContext);
+
   const onlineStatus = UseOnlineStatus();
 
+  const updateName = () => {
+    userDetails.setUserName("DVG");
+  };
+
+  const cartSelector = useSelector((store) => {
+    return store.cart.items;
+  });
+
   return (
-    <div className="header flex justify-between px-2 py-2 bg-orange-300">
+    <div className="header flex justify-between bg-orange-300 px-2 py-2">
       <div className="test ">
         <Link to="/">
           <img
@@ -23,38 +36,43 @@ const HeaderComponent = () => {
       <div className="test1 flex items-center">
         <ul className="flex">
           <Link to="/home">
-            <li className="px-3 font-semibold" href="#">
+            <li className="px-3 py-2 font-semibold" href="#">
               Home
             </li>
           </Link>
           <Link to="/aboutUs">
-            <li className="px-3 font-semibold" href="#">
+            <li className="px-3 py-2 font-semibold" href="#">
               AboutUs
             </li>
           </Link>
           <Link to="help">
-            <li className="px-3 font-semibold" href="#">
+            <li className="px-3 py-2 font-semibold" href="#">
               Help
             </li>
           </Link>
           <Link to="/contactUs">
-            <li className="px-3 font-semibold" href="#">
+            <li className="px-3 py-2 font-semibold" href="#">
               ContactUs
             </li>
           </Link>
           <Link to="/grocery">
-            <li className="px-3 font-semibold" href="#">
+            <li className="px-3 py-2 font-semibold" href="#">
               Groceries
             </li>
           </Link>
-          <li>
-            <span className="px-3 font-semibold">
-              {onlineStatus ? "🟢 Online" : "🔴 Offline"}
-            </span>
+          <li className="px-3 py-2">
+            Cart
+            <div className="mx-2 inline-block w-6 h-6 rounded-full bg-gray-500 text-center">
+              {cartSelector.length}
+            </div>
+          </li>
+
+          <li className="px-3 py-2 font-semibold">
+            {onlineStatus ? "🟢 Online" : "🔴 Offline"}
           </li>
           <li>
             <button
-              className="login-btn px-3 font-semibold"
+              className="login-btn px-3 py-2 font-semibold"
               onClick={() => {
                 setLoginName(loginName === "Login" ? "Logout" : "Login");
               }}
@@ -64,7 +82,16 @@ const HeaderComponent = () => {
           </li>
           <li>
             <button
-              className="add-to-cart-btn px-3 font-semibold"
+              className="bg-blue-400 px-3 py-2 rounded-lg"
+              onClick={updateName}
+            >
+              updateName
+            </button>
+          </li>
+          <li className="list-none px-3 py-2">{userDetails.loggedUser}</li>
+          <li>
+            <button
+              className="add-to-cart-btn px-3 py-2 font-semibold"
               onClick={() => {
                 setCartButtonName(
                   cartButtonName == "Add to cart" ? "payment" : "Add to cart"

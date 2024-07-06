@@ -1,5 +1,6 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 
 import HeaderComponent from "./components/header";
 import FooterComponent from "./components/footer";
@@ -11,12 +12,20 @@ import AboutUs from "./components/AboutUs";
 import ContactUs from "./components/ContactUs";
 import ErrorPage from "./components/ErrorPage";
 import RestaurantOverview from "./components/RestaurantOverview";
+import UserContext from "../utils/UserContext";
+import AppStore from "./Store/AppStore";
+
 const Application = () => {
+  const [userName, setUserName] = useState("Deepika");
   return (
     <div>
-      <HeaderComponent />
-      <Outlet />
-      <FooterComponent />
+      <Provider store={AppStore}>
+        <UserContext.Provider value={{ loggedUser: userName, setUserName }}>
+          <HeaderComponent />
+          <Outlet />
+          <FooterComponent />
+        </UserContext.Provider>
+      </Provider>
     </div>
   );
 };

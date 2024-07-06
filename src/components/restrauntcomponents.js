@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import BaseUrls from "./baseUrls";
 import { Link } from "react-router-dom";
+import UserContext from "../../utils/UserContext";
 
 const RestaurantComponent = (props) => {
   const {
@@ -12,6 +14,8 @@ const RestaurantComponent = (props) => {
     areaName,
     cloudinaryImageId,
   } = props.restData.info;
+  const userDetails = useContext(UserContext);
+
   return (
     <div className="rest-container w-[280] mr-8 mb-8 rounded-2xl">
       <div className="image-cont w-full h-[150] m-auto overflow-hidden rounded-2xl">
@@ -39,6 +43,7 @@ const RestaurantComponent = (props) => {
 
       <p className="">{cuisines.join(", ")}</p>
       <p className="">{`${locality}, ${areaName}`}</p>
+      <p>Created by: {userDetails.loggedUser}</p>
     </div>
   );
 };
@@ -49,7 +54,9 @@ export const RecommendedRestaurantDetails = (RestaurantComponent) => {
   return (props) => {
     return (
       <div>
-        <label className="bg-blue-800 text-white px-2 absolute">Promoted</label>
+        <label className="bg-green-600 text-white px-2 absolute">
+          Promoted
+        </label>
         <RestaurantComponent {...props} />
       </div>
     );
